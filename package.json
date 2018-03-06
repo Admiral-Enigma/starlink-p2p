@@ -1,0 +1,22 @@
+{
+  "name": "starlink-p2p",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Admiral-Enigma/starlink-p2p.git"
+  },
+  "author": "Admiral-Enigma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Admiral-Enigma/starlink-p2p/issues"
+  },
+  "homepage": "https://github.com/Admiral-Enigma/starlink-p2p#readme",
+  "dependencies": {
+    "smokesignal": "^0.2.2"
+  }
+}
