@@ -1,5 +1,5 @@
 var smoke = require('smokesignal')
-var remoteevents = require('remote-events')
+var RemoteEventEmitter = require('remote-events')
 
 var node = smoke.createNode({
   port: 8495,
@@ -15,13 +15,14 @@ console.log('ID', node.id)
 
 node.on('connect', function() {
   // Hey, now we have at least one peer!
-  var ree = new remoteevents()
+  var ree = new RemoteEventEmitter()
   node.broadcast.pipe(ree.getStream()).pipe(node.broadcast)
   ree.on('fisk', function () {
     console.log('GOT FISK');
   })
-  
-  node.broadcast.write('HEYO')
+  ree.emit('sildfisk')
+
+  node.broadcast.write('sild')
 })
 
 node.on('disconnect', function() {
