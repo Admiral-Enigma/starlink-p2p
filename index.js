@@ -1,38 +1,22 @@
-var smoke = require('smokesignal')
-var RemoteEventEmitter = require('remote-events')
+const express = require('express')
+const bodyParser = require('body-parser')
+var RpiLeds = require('rpi-leds');
+var leds = new RpiLeds();
 
-var node = smoke.createNode({
-  port: 8495,
-  address: smoke.localIp('192.168.43.1/255.255.255.0')
-, seeds: [{port: 8495, address:'192.168.43.235'}] // 192.168.43.235 pi //192.168.43.36 mac
-})
-//ifconfig | grep broadcast | arp -a
+let app = express()
+const PORT = process.env.PORT || 8080
 
-// listen on network events...
-console.log('Port', node.options.port)
-console.log('IP', node.options.address)
-console.log('ID', node.id)
-
-node.on('connect', function() {
-  // Hey, now we have at least one peer!
-  var ree = new RemoteEventEmitter()
-  node.broadcast.pipe(ree.getStream()).pipe(node.broadcast)
-  ree.on('fisk', function () {
-    console.log('GOT FISK');
-  })
-  ree.emit('sildfisk')
-
-  node.broadcast.write('sild')
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.get('/led/on', function (req,res) {
+  leds.power.turnOn();
+  leds.status.turnOn();
 })
 
-node.on('disconnect', function() {
-  // Bah, all peers gone.
+app.get('/led/off', function (req,res) {
+  leds.power.turnOff();
+  leds.status.turnOff();
 })
-
-// Broadcast is a stream
-node.broadcast.pipe(process.stdout)
-
-// Start the darn thing
-node.start()
-
-// mah, i'd rather stop it
+app.listen(PORT, () => {
+  console.log('Server running on port: '+PORT);
+})
