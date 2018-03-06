@@ -1,19 +1,27 @@
 var smoke = require('smokesignal')
-
+var remoteevents = require('remote-events')
 
 var node = smoke.createNode({
-  port: 8495
-, seeds: [{port: 8495, address:'192.168.2.100'}] // 169.254.77.182 pi //169.254.120.192 mac
+  port: 8495,
+  address: smoke.localIp('192.168.43.1/255.255.255.0')
+, seeds: [{port: 8495, address:'192.168.43.235'}] // 192.168.43.235 pi //192.168.43.36 mac
 })
 //ifconfig | grep broadcast | arp -a
 
 // listen on network events...
+console.log('Port', node.options.port)
+console.log('IP', node.options.address)
+console.log('ID', node.id)
 
 node.on('connect', function() {
   // Hey, now we have at least one peer!
-
-  // ...and broadcast stuff -- this is an ordinary duplex stream!
-  node.broadcast.write('HEYO! I\'m here')
+  var ree = new remoteevents()
+  node.broadcast.pipe(ree.getStream()).pipe(node.broadcast)
+  ree.on('fisk', function () {
+    console.log('GOT FISK');
+  })
+  
+  node.broadcast.write('HEYO')
 })
 
 node.on('disconnect', function() {
@@ -21,7 +29,7 @@ node.on('disconnect', function() {
 })
 
 // Broadcast is a stream
-process.stdin.pipe(node.broadcast).pipe(process.stdout)
+node.broadcast.pipe(process.stdout)
 
 // Start the darn thing
 node.start()
