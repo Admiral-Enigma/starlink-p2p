@@ -1,7 +1,7 @@
 var Gpio = require('onoff').Gpio;
 var LED = new Gpio(4, 'out');
 var JSONTCPSOCKET = require('json-tcp-socket');
-var blinkInterval = setInterval(blinkLED, 350)
+var blinkInterval = setInterval(blinkLED, 500)
 var gSocket = null
 var JSONTCPSOCKET = new JSONTCPSOCKET({tls: false});
 var server = new JSONTCPSOCKET.Server()
