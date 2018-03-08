@@ -24,6 +24,11 @@ function blinkLED() { //function to start blinking
 
   // console.log(gSocket)
   } else {
+    var b = {blink: false}
+    if (gSocket != null){
+         gSocket.write(b)
+         console.log('WRITE')
+    }
     LED.writeSync(0); //set pin state to 0 (turn LED off)
   }
 }
