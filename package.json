@@ -17,8 +17,7 @@
   },
   "homepage": "https://github.com/Admiral-Enigma/starlink-p2p#readme",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "rpi-leds": "0.0.3"
+    "json-tcp-socket": "^1.0.3",
+    "onoff": "2.0.0"
   }
 }
