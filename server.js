@@ -15,12 +15,13 @@ server.on('connection', function (socket) {
 
 function blinkLED() { //function to start blinking
   if (LED.readSync() === 0) { //check the pin state, if the state is 0 (or off)
+    var b = {blink: true}
+    if (gSocket != null){
+         gSocket.write(b)
+         console.log('WRITE')
+    }
     LED.writeSync(1);
-   var b = {blink: true}
-   if (gSocket != null){
-        gSocket.write(b)
-        console.log('WRITE')
-   }
+
   // console.log(gSocket)
   } else {
     LED.writeSync(0); //set pin state to 0 (turn LED off)
