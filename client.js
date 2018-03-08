@@ -16,8 +16,7 @@ socket.on('connect', function () {
 function blinkLED() { //function to start blinking
   if (LED.readSync() === 0) { //check the pin state, if the state is 0 (or off)
     LED.writeSync(1);
-  } else {
-    LED.writeSync(0); //set pin state to 0 (turn LED off)
+    LED.writeSync(0);
   }
 }
 socket.connect(1337, '192.168.123.88');
