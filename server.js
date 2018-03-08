@@ -40,6 +40,6 @@ function endBlink() { //function to stop blinking
   process.exit()
 }
 
-setTimeout(endBlink, 50000); //stop blinking after 5 seconds
+//setTimeout(endBlink, 5000000); 
 server.listen(1337, '0.0.0.0');
 console.log('Server started')
