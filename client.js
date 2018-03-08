@@ -11,4 +11,4 @@ socket.on('connect', function () {
     }
   })
 })
-socket.connect(1337, 'ip');
+socket.connect(1337, '192.168.123.88');

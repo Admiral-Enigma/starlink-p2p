@@ -1,24 +1,27 @@
 var Gpio = require('onoff').Gpio;
 var LED = new Gpio(4, 'out');
 var JSONTCPSOCKET = require('json-tcp-socket');
-var blinkInterval = null
+var blinkInterval = setInterval(blinkLED, 350)
+var gSocket = null
 var JSONTCPSOCKET = new JSONTCPSOCKET({tls: false});
 var server = new JSONTCPSOCKET.Server()
 
 server.on('connection', function (socket) {
   console.log('Client connected');
-  blinkInterval = setInterval(function () {
-    blinkLED(socket)
-  }, 1000)
+  gSocket = socket
 
 })
 
 
-function blinkLED(socket) { //function to start blinking
+function blinkLED() { //function to start blinking
   if (LED.readSync() === 0) { //check the pin state, if the state is 0 (or off)
     LED.writeSync(1);
-    var b = {blink: true}
-    socket.write(b)
+   var b = {blink: true}
+   if (gSocket != null){
+        gSocket.write(b)
+        console.log('WRITE')
+   }
+  // console.log(gSocket)
   } else {
     LED.writeSync(0); //set pin state to 0 (turn LED off)
   }
@@ -30,5 +33,6 @@ function endBlink() { //function to stop blinking
   LED.unexport(); // Unexport GPIO to free resources
 }
 
-setTimeout(endBlink, 5000); //stop blinking after 5 seconds
+setTimeout(endBlink, 50000); //stop blinking after 5 seconds
 server.listen(1337, '0.0.0.0');
+console.log('Server started')
